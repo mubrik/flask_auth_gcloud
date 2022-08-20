@@ -1,7 +1,6 @@
-import imp
 import click
 from flask.cli import AppGroup
-from app import app, db
+from app import db
 
 
 # create a cli group
@@ -21,5 +20,3 @@ def db_tables(action='create'):
 def db_rows(action='create'):
   # run action
   pass
-    
-app.cli.add_command(app_cli)

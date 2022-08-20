@@ -130,3 +130,16 @@ dmypy.json
 
 # local sqllite
 *.db
+
+# migrations
+migrations/
+
+# dev logs
+logs/
+
+# env
+firebcred.json
+
+# deployment scripts
+app.yaml
+

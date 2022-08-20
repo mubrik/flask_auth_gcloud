@@ -1,0 +1,51 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+runtime: python310
+
+entrypoint: gunicorn -b :$PORT -w 2 'app:create_app()'
+
+env_variables:
+  CORS_ORIGINS_LIST: "http://127.0.0.1:3000,http://localhost:3000"
+  DB_NAME: 'auth_dev'
+  DB_HOST: '/cloudsql/project:region:instance-id'
+  DB_PORT: '5432'
+  DB_PASS: 'sample'
+  DB_USER: 'sample'
+  DB_ADAPTER: 'adpater'
+  SECRET_KEY: 'some-secret-key'
+  JWT_SECRET_KEY: 'some-secret-key'
+  GCLOUD_APP_CRED: '{
+    "type": "service_account",
+    "project_id": "project_id",
+    "private_key_id": "private_key_id",
+    "private_key": "private_key",
+    "client_email": "client_email",
+    "client_id": "client_id",
+    "auth_uri": "auth_uri",
+    "token_uri": "token_uri",
+    "auth_provider_x509_cert_url": "auth_provider_x509_cert_url",
+    "client_x509_cert_url": "client_x509_cert_url"}'
+
+# handlers:
+#   # This configures Google App Engine to serve the files in the app's static
+#   # directory.
+# - url: /static
+#   static_dir: static
+
+#   # This handler routes all requests not caught above to your main app. It is
+#   # required when static routes are defined, but can be omitted (along with
+#   # the entire handlers section) when there are no static files defined.
+# - url: /.*
+#   script: auto

@@ -3,13 +3,13 @@
 ## Description
 
 - This contains the base folder structure to be used for flask backend deployment
-- Folder structure is modularized to allow plug and play of new modules/functions
-- Follows Test Driven Development with unittest cases
+- Folder structure is modularized to allow plug and play of new modules/blueprints
+- Google firebase for authorization
 
 ## Installation
 
 - make a clone of repository
-- python>=3.5 app uses typing feature so this is an important requirement
+- python=3.10 app uses typing feature so this is an important requirement
 
 ### Install Dependencies
 
@@ -40,14 +40,14 @@ Windows:
 pip install -r requirements.txt
 ```
 
-## Set up the Database
+### local development
 
-This isnt a requirement, the default DB type used is SQLLite which is created
+## Set up the Database
 
 With Postgres running, create a database:
 
 ```bash
-createdb dbname
+createdb <dbname>
 ```
 
 ## Set up your Enviroment Variables
@@ -55,13 +55,24 @@ createdb dbname
 - create a .env file in the root folder with the following variables, example:
 
 ```bash
-DEBUG=True
-DB_URI='postgresql://<postgresusername>:<postgrespassword>@localhost:5432/<dbname>'
-TEST_DB_URI='postgresql://<postgresusername>:<postgrespassword>@localhost:5432/<dbname>'
-DB_NAME='base.db' # if not set db will be test.db
-TEST_DB_NAME='base_test.db'
-FLASK_RUN_MODE=development # or testing
-DB_TYPE=sqlite # or postgres
+DB_URI='postgresql://<username>:<password>@<host>:<port>/<dbname>'
+CORS_ORIGINS_LIST="http://127.0.0.1:3000,http://localhost:3000"
+SECRET_KEY='some-secret-string'
+JWT_SECRET_KEY='some-secret-string'
+# GCLOUD_APP_CRED is from firebase service account, not necessary when deploying to GCLOUD but necessary for other providers
+GCLOUD_APP_CRED='{
+  "type": "service_account",
+  "project_id": "project_id",
+  "private_key_id": "private_key_id",
+  "private_key": "private_key",
+  "client_email": "client_email",
+  "client_id": "client_id",
+  "auth_uri": "auth_uri",
+  "token_uri": "token_uri",
+  "auth_provider_x509_cert_url": "auth_provider_x509_cert_url",
+  "client_x509_cert_url": "client_x509_cert_url"}'
+}' 
+
 ```
 
 Please make sure the database name matches which you created above
@@ -72,43 +83,4 @@ Please make sure the database name matches which you created above
 
 ```bash
 flask run
-```
-
-- top module package
-
-```bash
-python run.py
-```
-
-## Run Test
-
-- To run tests you need to set the `FLASK_RUN_MODE` environment variable to testing
-- You also need to set the DB_TYPE to match the DB in use
-
-```bash
-TEST_DB_URI='postgresql://<postgresusername>:<postgrespassword>@localhost:5432/<dbname>'
-TEST_DB_NAME='dbname
-FLASK_RUN_MODE=testing
-DB_TYPE=sqlite # or postgres
-```
-
-- To start tests, run:
-
-```bash
-flask run
-```
-
-## Database Creation/Drop
-
-- In another terminal(activated) you have commands available to manipulate the db
-  to drop db tables:
-
-```bash
-flask app dbtables drop
-```
-
-to add db tables:
-
-```bash
-flask app dbtables create
 ```
